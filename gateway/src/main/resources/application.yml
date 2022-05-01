@@ -1,0 +1,33 @@
+spring:
+  main:
+    web-application-type: reactive
+  application:
+    name: gateway
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: false
+      routes:
+        - id: account-service
+          uri: lb://account-service
+          predicates:
+            - Path=/account/**
+
+        - id: order-service
+          uri: lb://order-service
+          predicates:
+            - Path=/order/**
+
+
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG
+    reactor.netty.http.client: DEBUG
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:9999/eureka/
